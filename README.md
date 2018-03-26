@@ -7,15 +7,15 @@ To simulate the magnetic field of a tile
 
 * Arguments
      - B0: float
-         magnetic field at the center of the tile
+         - magnetic field at the center of the tile
      - x0: float
-         the x position of the tile
+         - the x position of the tile
     - y0: float
-         the y position of the tile
+         - the y position of the tile
     - z0: float
          the z position of the tile
     - r0: float
-        the radius of the tile
+        - the radius of the tile
 * Example
 
     ```

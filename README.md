@@ -1,9 +1,6 @@
 # solenoid.py
 To simulate solenoids and compute the magnetic field
-```python
-s = "Python syntax highlighting"
-print s
-```
+
 ## Class Tile.py
 ### Tile (constructor)
 To create the tile
@@ -33,15 +30,12 @@ To compute the magnetic field produced by the tile
 
 * Example
      
-     ```python
-     tile = Tile(1,1,2,3,5)
-     
-     l = np.linspace(-1,1,10)
-     
-     x, y, z = np.meshgrid(l,l,l)
-     
-     Bx, By, Bz = tile.field(l,l,l)
-     ```
+```python
+tile = Tile(1,1,2,3,5)
+l = np.linspace(-1,1,10)
+x, y, z = np.meshgrid(l,l,l)
+Bx, By, Bz = tile.field(l,l,l)
+```
 
 ### Tile.displayTile
 To display the tile
@@ -55,11 +49,11 @@ To display the tile
 
 * Example
 
-     ```python
-     tile = Tile(1,1,2,3,5)
-     fig = tile.displayTile()
-     fig.savefig("tile.png")
-     ```
+```python
+tile = Tile(1,1,2,3,5)
+fig = tile.displayTile()
+fig.savefig("tile.png")
+```
 
 ### Tile.displayField3D(figsize=(10,10),nb_points=8,colorTile="red",colorArrow="blue",linewidth=3)
 """
@@ -77,13 +71,11 @@ To display the field
 
 * Example
      
-     ```
-     tile = Tile(1,1,2,3,5)
-     
-     fig = tile.displayField3D()
-     
-     fig.savefig("3D.png")
-     ```
+```python
+tile = Tile(1,1,2,3,5)
+fig = tile.displayField3D()
+fig.savefig("3D.png")
+```
      
 ### Tile.displayField2D
 
@@ -100,10 +92,8 @@ To display the field in a plan x=0, y=0 or z=0
 
 * Example
      
-     ```
-     tile = Tile(1,1,2,3,5)
-     
-     fig = tile.displayField2D()
-     
-     fig.savefig("2D.png")
-     ```
+```python
+tile = Tile(1,1,2,3,5)
+fig = tile.displayField2D()
+fig.savefig("2D.png")
+```

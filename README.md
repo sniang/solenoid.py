@@ -99,6 +99,6 @@ tile = Tile(1,1,2,3,5)
 fig = tile.displayField2D()
 fig.savefig("2D.png")
 ```
-![field in 2D](3D.png "field in 2D")
+![field in 2D](2D.png "field in 2D")
 ## Class Solenoid.py
 

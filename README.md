@@ -96,3 +96,6 @@ tile = Tile(1,1,2,3,5)
 fig = tile.displayField2D()
 fig.savefig("2D.png")
 ```
+
+# Class Solenoid.py
+

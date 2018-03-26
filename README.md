@@ -13,7 +13,7 @@ To create the tile
      - r0: float — the radius of the tile
 * Example
 
-    ```
+    ```python
     tile = Tile(1,1,2,3,5) 
     ```
 
@@ -30,7 +30,7 @@ To compute the magnetic field produced by the tile
 
 * Example
      
-     ```
+     ```python
      tile = Tile(1,1,2,3,5)
      
      l = np.linspace(-1,1,10)
@@ -52,11 +52,11 @@ To display the tile
 
 * Example
 
-     ```tile = Tile(1,1,2,3,5)
-     
+     ```python
+     tile = Tile(1,1,2,3,5)
      fig = tile.displayTile()
-     
-     fig.savefig("tile.png")```
+     fig.savefig("tile.png")
+     ```
 
 ### Tile.displayField3D(figsize=(10,10),nb_points=8,colorTile="red",colorArrow="blue",linewidth=3)
 """

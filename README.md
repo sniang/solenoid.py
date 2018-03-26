@@ -14,7 +14,7 @@ To create the tile
 * Example
 
 ```python
-tile = Tile(1,1,2,3,5) 
+tile = Tile(1,1,2,3,5)
 ```
 
 ### Tile.field
@@ -29,7 +29,7 @@ To compute the magnetic field produced by the tile
      - Bx, By, Bz: (float,float,float) — The magnetic field
 
 * Example
-     
+
 ```python
 tile = Tile(1,1,2,3,5)
 l = np.linspace(-1,1,10)
@@ -70,7 +70,7 @@ To display the field
      - fig: matplotlib.pyplot.figure — the figure
 
 * Example
-     
+
 ```python
 tile = Tile(1,1,2,3,5)
 fig = tile.displayField3D()
@@ -93,7 +93,7 @@ To display the field in a plan x=0, y=0 or z=0
      - fig: matplotlib.pyplot.figure — the figure
 
 * Example
-     
+
 ```python
 tile = Tile(1,1,2,3,5)
 fig = tile.displayField2D()
@@ -101,4 +101,11 @@ fig.savefig("2D.png")
 ```
 ![field in 2D](2D.png "field in 2D")
 ## Class Solenoid.py
-
+### Solenoid (constructor)
+### Solenoid.field
+### Solenoid.displaySolenoid
+![solenoid display](sol.png "solenoid display")
+### Solenoid.displayField3D
+![field in 3D](sol_3D.png "field in 3D")
+### Solenoid.displayField2D
+![field in 2D](sol_2D.png "field in 2D")

@@ -52,13 +52,11 @@ To display the tile
 
 * Example
 
-     ```
-     tile = Tile(1,1,2,3,5)
+     ```tile = Tile(1,1,2,3,5)
      
      fig = tile.displayTile()
      
-     fig.savefig("tile.png")
-     ```
+     fig.savefig("tile.png")```
 
 ### Tile.displayField3D(figsize=(10,10),nb_points=8,colorTile="red",colorArrow="blue",linewidth=3)
 """

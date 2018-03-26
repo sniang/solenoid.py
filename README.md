@@ -17,6 +17,7 @@ To simulate the magnetic field of a tile
     - r0: float
         the radius of the tile
 * Example
+
     ```
     tile = Tile(1,1,2,3,5) 
     ```

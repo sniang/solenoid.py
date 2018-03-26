@@ -55,7 +55,7 @@ fig = tile.displayTile()
 fig.savefig("tile.png")
 ```
 
-![alt text](tile.png "tile display")
+![tile display](tile.png "tile display")
 ### Tile.displayField3D(figsize=(10,10),nb_points=8,colorTile="red",colorArrow="blue",linewidth=3)
 To display the field
 
@@ -76,7 +76,9 @@ tile = Tile(1,1,2,3,5)
 fig = tile.displayField3D()
 fig.savefig("3D.png")
 ```
-     
+
+![field in 3D](3D.png "field in 3D")
+
 ### Tile.displayField2D
 
 To display the field in a plan x=0, y=0 or z=0
@@ -97,6 +99,6 @@ tile = Tile(1,1,2,3,5)
 fig = tile.displayField2D()
 fig.savefig("2D.png")
 ```
-
+![field in 2D](3D.png "field in 2D")
 ## Class Solenoid.py
 

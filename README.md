@@ -55,7 +55,7 @@ fig = tile.displayTile()
 fig.savefig("tile.png")
 ```
 
-!(tile.png)
+![alt text](tile.png "tile display")
 ### Tile.displayField3D(figsize=(10,10),nb_points=8,colorTile="red",colorArrow="blue",linewidth=3)
 To display the field
 

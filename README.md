@@ -16,9 +16,9 @@ To create the tile
      - r0: float — the radius of the tile
 * Example
 
-    ```python
-    tile = Tile(1,1,2,3,5) 
-    ```
+```python
+tile = Tile(1,1,2,3,5) 
+```
 
 ### Tile.field
 To compute the magnetic field produced by the tile

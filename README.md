@@ -1,6 +1,9 @@
 # solenoid.py
 To simulate solenoids and compute the magnetic field
-
+```python
+s = "Python syntax highlighting"
+print s
+```
 ## Class Tile.py
 ### Tile (constructor)
 To create the tile

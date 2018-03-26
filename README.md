@@ -32,8 +32,11 @@ To compute the magnetic field produced by the tile
      
      ```
      tile = Tile(1,1,2,3,5)
+     
      l = np.linspace(-1,1,10)
+     
      x, y, z = np.meshgrid(l,l,l)
+     
      Bx, By, Bz = tile.field(l,l,l)
      ```
 
@@ -51,7 +54,9 @@ To display the tile
 
      ```
      tile = Tile(1,1,2,3,5)
+     
      fig = tile.displayTile()
+     
      fig.savefig("tile.png")
      ```
 
@@ -73,7 +78,9 @@ To display the field
      
      ```
      tile = Tile(1,1,2,3,5)
+     
      fig = tile.displayField3D()
+     
      fig.savefig("3D.png")
      ```
      
@@ -94,6 +101,8 @@ To display the field in a plan x=0, y=0 or z=0
      
      ```
      tile = Tile(1,1,2,3,5)
+     
      fig = tile.displayField2D()
+     
      fig.savefig("2D.png")
      ```

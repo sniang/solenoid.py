@@ -73,7 +73,7 @@ class Tile:
             tile = Tile(1,1,2,3,5)
             l = np.linspace(-1,1,10)
             x, y, z = np.meshgrid(l,l,l)
-            Bx, By, Bz = tile.field(l,l,l)
+            Bx, By, Bz = tile.field(x, y, z)
         """
         x = x-self.x0
         y = y-self.y0
@@ -83,6 +83,12 @@ class Tile:
             K = special.ellipk
             E = special.ellipe
             r = np.sqrt(x1**2+y1**2)
+            a = r/self.r0
+            b = z1/self.r0
+            c = z1/r
+            Q = (1+a)**2 + b**2
+            m = 4*a/Q
+            
             if r == self.r0 and z1 == 0:
                 warnings.warn("Warning : you cannot estimate the field on the tile")
                 return np.nan, np.nan, np.nan
@@ -91,18 +97,17 @@ class Tile:
                 Bz = self.B0*(ca**3)                
                 return 0, 0, Bz
             
-            a = r/self.r0
-            b = z1/self.r0
-            c = z1/r
-            Q = (1+a)**2 + b**2
-            k = np.sqrt(4*a/Q)
+            if np.abs(m-1) < 0.01:
+                def K(x):
+                    return special.ellipkm1(1-x)
+            
             c1 = x1/r
             s1 = y1/r
     
-            Br = self.B0*c/(np.pi*np.sqrt(Q))*(E(k)*(1+a**2+b**2)/(Q-4*a)-K(k))
+            Bz = self.B0/(np.pi*np.sqrt(Q))*(E(m)*(1-a**2-b**2)/(Q-4*a)+K(m))
+            Br = self.B0*c/(np.pi*np.sqrt(Q))*(E(m)*(1+a**2+b**2)/(Q-4*a)-K(m))
             Bx = Br*c1
             By = Br*s1
-            Bz = self.B0/(np.pi*np.sqrt(Q))*(E(k)*(1-a**2-b**2)/(Q-4*a)+K(k))
             return Bx, By, Bz
         vect = np.vectorize(f)
         return vect(x,y,z)
@@ -245,12 +250,12 @@ class Tile:
 
         else:
             print("Your choice of plan is incorrect")
-            return fig
+            return fig        
+
+        no = np.sqrt(Bx1**2+Bx2**2+Bx3**2)
+        Bx1 = Bx1/no
+        Bx2 = Bx2/no
         
-        Bx1 = Bx1/np.sqrt(Bx2**2+Bx1**2+Bx3**2)
-        Bx2 = Bx2/np.sqrt(Bx2**2+Bx1**2+Bx3**2)
-
-
         plt.title(r"$B_0 = $"+str(self.B0)+"$T$, "+title,fontsize=15)
         plt.xlabel(xlabel,fontsize=15)
         plt.ylabel(ylabel,fontsize=15)

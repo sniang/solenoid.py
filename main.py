@@ -37,33 +37,26 @@ fig = tile.displayField3D()
 fig.savefig("3D.png")
 
 
-
 # create a tile and compute the field
 r0 = 2
 sol = Solenoid(1,0,0,0,r0)
 Bx, By, Bz = sol.field(1,1,1)
 print(Bx, By, Bz)
-# warning : you cannot estimate the field on the tile
-x0 = np.sqrt(r0)
-y0 = x0
-Bx, By, Bz = sol.field(x0, y0, 0)
-print(Bx, By, Bz)
+
 
 # display the solenoid
-sol = Solenoid()
+sol = Solenoid(n=100)
 fig = sol.displaySolenoid()
 fig.savefig("sol.png")
 
 # display the field created by a solenoid in 2D
 sol = Solenoid()
-fig = sol.displayField3D()
-fig.savefig("sol_3D.png")
-
-# display the field created by a solenoid in 3D
-sol = Solenoid()
 fig = sol.displayField2D()
 fig.savefig("sol_2D.png")
 
-
+# display the field created by a solenoid in 3D
+sol = Solenoid(n = 100)
+fig = sol.displayField3D()
+fig.savefig("sol_3D.png")
 
 

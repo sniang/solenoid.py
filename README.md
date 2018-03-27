@@ -45,7 +45,7 @@ Be careful, you cannot estimate the field on the tile. In that cas, the field va
 tile = Tile(1,1,2,3,5)
 l = np.linspace(-1,1,10)
 x, y, z = np.meshgrid(l,l,l)
-Bx, By, Bz = tile.field(l,l,l)
+Bx, By, Bz = tile.field(x, y, z)
 ```
 
 ### Tile.displayTile
@@ -173,7 +173,7 @@ To compute the magnetic field produced by the solenoid
 sol = solenoid(r0=0.5)
 l = np.linspace(-1,1,10)
 x, y, z = np.meshgrid(l,l,l)
-Bx, By, Bz = sol.field(l,l,l)
+Bx, By, Bz = sol.field(x, y, z)
 ```
             
 ### Solenoid.displaySolenoid
@@ -203,4 +203,30 @@ fig.savefig("sol.png")
 ![field in 3D](sol_3D.png "field in 3D")
 
 ### Solenoid.displayField2D
+To display the field in a plan x=0, y=0 or z=0
+
+* Arguments
+    - eq_0: string
+        to define the variable equal to 0
+        accepted argument "x", "y"
+    - figsize: (float,float)
+        to determine the size of the figure
+    - nb_points: int
+        number of points of evaluation on each axis
+    - color: string
+        color of the arrows
+    - markTile: boolean
+        To diplay the position of the tiles
+* Returns
+    - fig: matplotlib.pyplot.figure
+        the figure
+        
+* Example
+
+```python
+sol = Solenoid(1,1,2,3,5)
+fig = sol.displayField2D()
+fig.savefig("sol_2D.png")
+```
+            
 ![field in 2D](sol_2D.png "field in 2D")

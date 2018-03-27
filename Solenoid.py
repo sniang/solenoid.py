@@ -15,7 +15,7 @@ class Solenoid:
     
     * Attributes
         - self.B0: float
-            magnetic field at the center of the tile
+            magnetic field inside the solenoid if it were infinite
         - self.L: float
             the length of the solenoid in meter
         - self.n: float
@@ -36,13 +36,13 @@ class Solenoid:
             the tiles
         
     """
-    def __init__(self,B0=1,L=1,n=100,x0=0,y0=0,z0=0,r0=0.5,axis="z"):
+    def __init__(self,I=400,L=1,n=2000,x0=0,y0=0,z0=0,r0=0.5,axis="z"):
         """
         The constructor
         
         * Arguments
-        - B0: float
-            magnetic field at the center of the tile
+        - I: float
+            the current intensity
         - L: float
             the length of the solenoid in meter
         - n: float
@@ -62,7 +62,8 @@ class Solenoid:
             sol = Solenoid(B0=1,L=1,n=100,x0=0,y0=0,z0=0,r0=0.5,axis="z")
             print(sol)
         """
-        self.B0 = B0
+        mu0 = 4E-7*np.pi
+        self.B0 = mu0*n*I
         self.L = L
         self.n = n
         self.x0 = x0
@@ -73,9 +74,12 @@ class Solenoid:
         N = self.N
         d = L/(N-1)
         self.tiles = []
+        self.I = I
+        
+        b0 = I*mu0/2/r0
         
         for i in np.arange(N) :
-         self.tiles.append(Tile(B0/N,x0=x0,y0=x0,z0=z0-L/2+i*d,r0=r0))
+         self.tiles.append(Tile(b0,x0=x0,y0=x0,z0=z0-L/2+i*d,r0=r0))
         
         
 
@@ -102,7 +106,7 @@ class Solenoid:
             sol = solenoid(r0=0.5)
             l = np.linspace(-1,1,10)
             x, y, z = np.meshgrid(l,l,l)
-            Bx, By, Bz = sol.field(l,l,l)
+            Bx, By, Bz = sol.field(x, y, z)
         """
         Bx = 0
         By = 0
@@ -172,15 +176,77 @@ class Solenoid:
         ax.set_title(title,fontsize=15)
         return fig
 
-    def displayField2D(self,figsize=(10,10)):
+    def displayField2D(self,eq_0="y",figsize=(10,10),nb_points=20,color="blue",markTile=True):
         """
-        * Arguments
-            -
-        * Returns
-            -
-        """
-        title = r"$B_0 = "+str(self.B0)+"T, x_0 = "+str(self.x0)+", y_0 = "+str(self.y0)+", z_0 = "+str(self.z0)+", r_0 = $"+str(self.r0)+", N = "+str(self.N)+", L = "+str(self.L)
+        To display the field in a plan x=0, y=0 or z=0
 
+        * Arguments
+            - eq_0: string
+                to define the variable equal to 0
+                accepted argument "x", "y"
+            - figsize: (float,float)
+                to determine the size of the figure
+            - nb_points: int
+                number of points of evaluation on each axis
+            - color: string
+                color of the arrows
+            - markTile: boolean
+                To diplay the position of the tiles
+        * Returns
+            - fig: matplotlib.pyplot.figure
+                the figure
+                
+        * Example
+            sol = Solenoid(1,1,2,3,5)
+            fig = sol.displayField2D()
+            fig.savefig("sol_2D.png")
+        """
+        nb_points = int(nb_points)
         fig = plt.figure(figsize=figsize)
-        plt.title(title)
+        
+        if eq_0 == "x":
+            xlabel = r"$y$"
+            ylabel = r"$z$"
+            title = r"x = "+str(self.x0)
+            x1, x2 = np.meshgrid(np.linspace(-3*self.r0+self.y0, 3*self.r0+self.y0, nb_points),np.linspace(self.z0-2*self.L,self.z0+2*self.L, nb_points))
+            x3 = np.zeros_like(x1)+self.x0
+            Bx3, Bx1, Bx2 = self.field(x3, x1, x2)
+            
+        elif eq_0 == "y":
+            xlabel = r"$x$"
+            ylabel = r"$z$"
+            title = r"y = "+str(self.y0)
+            x1, x2 = np.meshgrid(np.linspace(-3*self.r0+self.x0, 3*self.r0+self.x0, nb_points),np.linspace(self.z0-2*self.L,self.z0+2*self.L, nb_points))
+            x3 = np.zeros_like(x1)+self.y0
+            Bx1, Bx3, Bx2 = self.field(x1, x3, x2)
+        else:
+            print("Your choice of plan is incorrect")
+            return fig
+        
+        if markTile:
+            for tile in self.tiles:
+                if eq_0 == "x":
+                    dotx1 = np.array([-tile.r0,tile.r0])+tile.y0
+                    dotx2 = [tile.z0,tile.z0]
+                elif eq_0 == "y":
+                    
+                    dotx1 = np.array([-tile.r0,tile.r0])+tile.x0
+                    dotx2 = [tile.z0,tile.z0]
+                plt.plot(dotx1,dotx2,'.',ms=5,color="red")
+                
+                    
+            
+        no = np.sqrt(Bx1**2+Bx2**2+Bx3**2)
+        Bx1 = Bx1/no
+        Bx2 = Bx2/no
+
+        plt.quiver(x1,x2,Bx1,Bx2,color=color)
+            
+                
+        plt.title(r"$B_0 = $"+str(self.B0)+"$T$, "+title,fontsize=15)
+        plt.xlabel(xlabel,fontsize=15)
+        plt.ylabel(ylabel,fontsize=15)
+        plt.tight_layout()
+
         return fig
+

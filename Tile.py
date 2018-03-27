@@ -12,8 +12,19 @@ import warnings
 
 class Tile:
     """
-    To simulate the magnetic field of a tile
-
+    To simulate the tile
+    
+    * Attributes
+        - self.B0: float
+            magnetic field at the center of the tile
+        - self.x0: float
+            the x position of the tile
+        - self.y0: float
+            the y position of the tile
+        - self.z0: float
+            the z position of the tile
+        - self.r0: float
+            the radius of the tile
     """
     def __init__(self,B0=1,x0=0,y0=0,z0=0,r0=1):
         """
@@ -44,7 +55,7 @@ class Tile:
 
     def field(self,x,y,z):
         """
-        To create the tile
+        To compute the magnetic field produced by the tile
         
         * Arguments
             - x: float

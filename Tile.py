@@ -8,6 +8,7 @@ import numpy as np
 from scipy import special
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+import warnings
 
 class Tile:
     """
@@ -67,22 +68,33 @@ class Tile:
         y = y-self.y0
         z = z-self.z0
         
-        K = special.ellipk
-        E = special.ellipe
-        r = np.sqrt(x**2+y**2)
-        a = r/self.r0
-        b = z/self.r0
-        c = z/r
-        Q = (1+a)**2 + b**2
-        k = np.sqrt(4*a/Q)
-        c1 = x/r
-        s1 = y/r
-
-        Br = self.B0*c/(np.pi*np.sqrt(Q))*(E(k)*(1+a**2+b**2)/(Q-4*a)-K(k))
-        Bx = Br*c1
-        By = Br*s1
-        Bz = self.B0/(np.pi*np.sqrt(Q))*(E(k)*(1-a**2-b**2)/(Q-4*a)+K(k))
-        return Bx, By, Bz
+        def f(x1,y1,z1):
+            K = special.ellipk
+            E = special.ellipe
+            r = np.sqrt(x1**2+y1**2)
+            if r == self.r0 and z1 == 0:
+                warnings.warn("Warning : you cannot estimate the field on the tile")
+                return np.nan, np.nan, np.nan
+            if r == 0:
+                ca = self.r0/np.sqrt(self.r0**2+z1**2)
+                Bz = self.B0*(ca**3)                
+                return 0, 0, Bz
+            
+            a = r/self.r0
+            b = z1/self.r0
+            c = z1/r
+            Q = (1+a)**2 + b**2
+            k = np.sqrt(4*a/Q)
+            c1 = x1/r
+            s1 = y1/r
+    
+            Br = self.B0*c/(np.pi*np.sqrt(Q))*(E(k)*(1+a**2+b**2)/(Q-4*a)-K(k))
+            Bx = Br*c1
+            By = Br*s1
+            Bz = self.B0/(np.pi*np.sqrt(Q))*(E(k)*(1-a**2-b**2)/(Q-4*a)+K(k))
+            return Bx, By, Bz
+        vect = np.vectorize(f)
+        return vect(x,y,z)
 
 
     def displayTile(self,figsize=(10,10),color="red",linewidth=3):

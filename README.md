@@ -18,7 +18,9 @@ tile = Tile(1,1,2,3,5)
 ```
 
 ### Tile.field
-To compute the magnetic field produced by the tile
+To compute the magnetic field produced by the tile. 
+
+Be careful, you cannot estimate the field on the tile. In that cas, the field value is ```nan```.
 
 * Arguments
      - x: float — the x coordinate
@@ -56,7 +58,7 @@ fig.savefig("tile.png")
 ```
 
 ![tile display](tile.png "tile display")
-### Tile.displayField3D(figsize=(10,10),nb_points=8,colorTile="red",colorArrow="blue",linewidth=3)
+### Tile.displayField3D()
 To display the field
 
 * Arguments

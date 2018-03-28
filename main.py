@@ -50,7 +50,7 @@ fig = sol.displaySolenoid()
 fig.savefig("sol.png")
 
 # display the field created by a solenoid in 2D
-sol = Solenoid()
+sol = Solenoid(n=100)
 fig = sol.displayField2D()
 fig.savefig("sol_2D.png")
 

@@ -200,6 +200,29 @@ fig.savefig("sol.png")
 ![solenoid display](sol.png "solenoid display")
 
 ### Solenoid.displayField3D
+To display the field in 3D
+* Arguments
+    - figsize: (float,float)
+        to determine the size of the figure
+    - nb_points: int
+        number of points of evaluation on each axis
+    - colorTile: string
+        color of the tiles
+    - colorArrow: string
+        color of the arrows
+    - linewidth: float
+        thickness of the tile
+        
+* Returns
+    - fig: matplotlib.pyplot.figure
+        the figure
+* Example
+
+```python
+    sol = Solenoid(n = 100)
+    fig = sol.displayField3D()
+    fig.savefig("sol_3D.png")
+```
 ![field in 3D](sol_3D.png "field in 3D")
 
 ### Solenoid.displayField2D

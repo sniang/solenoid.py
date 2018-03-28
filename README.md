@@ -115,40 +115,35 @@ fig.savefig("2D.png")
 To simulate a solenoid
 
 * Attributes
-    - self.B0: float
-        magnetic field at the center of the tile
-    - self.L: float
-        the length of the solenoid in meter
-    - self.n: float
-        number of tiles per meter
-    - self.x0: float
-        the x position of the tile
-    - self.y0: float
-        the y position of the tile
-    - self.z0: float
-        the z position of the tile
-    - self.r0: float
-        the radius of the tile
-    - self.axis: string (for now, the only acceptable value is "z")
-        the axis of the solenoid
-    - self.N: int(n*L)
-        number of tiles
+    - I: float — the current intensity
+    - self.B0: float — magnetic field inside the solenoid if it were infinite
+    - self.L: float — the length of the solenoid in meter
+    - self.n: float — number of tiles per meter
+    - self.x0: float — the x position of the tile
+    - self.y0: float — the y position of the tile
+    - self.z0: float — the z position of the tile
+    - self.r0: float — the radius of the tile
+    - self.axis: string — the axis of the solenoid
+    - self.N: int(n*L) — number of tiles
+    - self.tiles: array(Tile) — the tiles
         
 ### Solenoid (constructor)
+The constructor
+
 * Arguments
-    - B0: float — magnetic field at the center of the tile
+    - I: float — the current intensity
     - L: float — the length of the solenoid in meter
     - n: float — number of tiles per meter
     - x0: float — the x position of the tile
     - y0: float — the y position of the tile
     - z0: float — the z position of the tile
     - r0: float — the radius of the tile
-    - axis: string — the axis of the solenoid
+    - axis: string (for now, the only acceptable value is "z") — the axis of the solenoid
 
 * Example
-   
+
 ```python
-sol = Solenoid(B0=1,L=1,n=100,x0=0,y0=0,z0=0,r0=0.5,axis="z")
+sol = Solenoid(I=400,L=1,n=100,x0=0,y0=0,z0=0,r0=0.5,axis="z")
 print(sol)
 ```
     
@@ -156,39 +151,51 @@ print(sol)
 To compute the magnetic field produced by the solenoid
 
 * Arguments
-    - x: float
-        the x coordinate
-    - y: float
-        the y coordinate
-    - z: float
-        the y coordinate
+    - x: float — the x coordinate
+    - y: float — the y coordinate
+    - z: float — the y coordinate
 
 * Returns
-    - Bx, By, Bz: (float,float,float)
-        The magnetic field
+    - Bx, By, Bz: (float,float,float) — The magnetic field
 
 * Example
 
 ```python
-sol = solenoid(r0=0.5)
+sol = Solenoid(r0=0.5)
 l = np.linspace(-1,1,10)
 x, y, z = np.meshgrid(l,l,l)
 Bx, By, Bz = sol.field(x, y, z)
 ```
-            
+
+### Solenoid.exportFieldMap
+To export a field map as a .txt file
+
+* Arguments
+    - filename: String — the name of the output file
+    - xmin: float — the x min coordinate
+    - xmax: float — the x max coordinate
+    - ymin: float — the y min coordinate
+    - ymax: float — the y max coordinate
+    - zmin: float — the z min coordinate
+    - zmax: float — the z max coordinate
+    - nb_points: int — number of points of evaluation on each axis
+    
+* Example
+
+```python
+sol.Solenoid()
+sol = exportFieldMap("output.txt",-1,1,-1,1,-1,1,20)
+```  
+    
 ### Solenoid.displaySolenoid
 To display the solenoid
 
 * Arguments
-    - figsize: (float,float)
-        to determine the size of the figure
-    - color: string
-        color of the tile
-    - linewidth: float
-        thickness of the tile
+    - figsize: (float,float) — to determine the size of the figure
+    - color: string — color of the tile
+    - linewidth: float — thickness of the tile
 * Returns
-    - fig: matplotlib.pyplot.figure
-        the figure
+    - fig: matplotlib.pyplot.figure — the figure
         
 * Example
 
@@ -202,53 +209,41 @@ fig.savefig("sol.png")
 ### Solenoid.displayField3D
 To display the field in 3D
 * Arguments
-    - figsize: (float,float)
-        to determine the size of the figure
-    - nb_points: int
-        number of points of evaluation on each axis
-    - colorTile: string
-        color of the tiles
-    - colorArrow: string
-        color of the arrows
-    - linewidth: float
-        thickness of the tile
+    - figsize: (float,float) — to determine the size of the figure
+    - nb_points: int — number of points of evaluation on each axis
+    - colorTile: string — color of the tiles
+    - colorArrow: string — color of the arrows
+    - linewidth: float — thickness of the tiles
         
 * Returns
-    - fig: matplotlib.pyplot.figure
-        the figure
+    - fig: matplotlib.pyplot.figure — the figure
 * Example
 
 ```python
-    sol = Solenoid(n = 100)
-    fig = sol.displayField3D()
-    fig.savefig("sol_3D.png")
-```
+sol = Solenoid(n = 50)
+fig = sol.displayField3D()
+fig.savefig("sol_3D.png")
+```    
 ![field in 3D](sol_3D.png "field in 3D")
 
 ### Solenoid.displayField2D
 To display the field in a plan x=0, y=0 or z=0
 
 * Arguments
-    - eq_0: string
-        to define the variable equal to 0
-        accepted argument "x", "y"
-    - figsize: (float,float)
-        to determine the size of the figure
-    - nb_points: int
-        number of points of evaluation on each axis
-    - color: string
-        color of the arrows
-    - markTile: boolean
-        To diplay the position of the tiles
+    - eq_0: string — to define the variable equal to 0 — accepted argument "x", "y"
+    - figsize: (float,float) — to determine the size of the figure
+    - nb_points: int — number of points of evaluation on each axis
+    - color: string — color of the arrows
+    - markTile: boolean — To diplay the position of the tiles
+    
 * Returns
-    - fig: matplotlib.pyplot.figure
-        the figure
+    - fig: matplotlib.pyplot.figure — the figure
         
 * Example
 
 ```python
-sol = Solenoid(1,1,2,3,5)
-fig = sol.displayField2D()
+sol = Solenoid(n=100)
+fig = sol.displayField2D(figsize=(8,8))
 fig.savefig("sol_2D.png")
 ```
             

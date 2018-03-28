@@ -9,14 +9,6 @@ from Solenoid import *
 from Tile import *
 import numpy as np
 
-# display the field created by a tile in 2D
-tile = Tile()
-fig = tile.displayField2D()
-fig.savefig("2D.png")
-
-
-# display the field created by a solenoid in 3D
-sol = Solenoid(n = 10)
-fig = sol.displayField2D()
-fig.savefig("sol_2D.png")
-
+# To export a field map as a .txt file
+sol = Solenoid()
+sol.exportFieldMap("output.txt",-1,1,-1,1,-1,1,20)

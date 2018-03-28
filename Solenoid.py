@@ -14,6 +14,8 @@ class Solenoid:
     To simulate a solenoid
     
     * Attributes
+        - I: float
+            the current intensity
         - self.B0: float
             magnetic field inside the solenoid if it were infinite
         - self.L: float
@@ -59,7 +61,7 @@ class Solenoid:
             the axis of the solenoid
         
         * Example
-            sol = Solenoid(B0=1,L=1,n=100,x0=0,y0=0,z0=0,r0=0.5,axis="z")
+            sol = Solenoid(I=400,L=1,n=100,x0=0,y0=0,z0=0,r0=0.5,axis="z")
             print(sol)
         """
         mu0 = 4E-7*np.pi
@@ -84,7 +86,7 @@ class Solenoid:
         
 
     def __str__(self):
-        return "B0 = "+str(self.B0)+", x0 = "+str(self.x0)+", y0 = "+str(self.y0)+", z0 = "+str(self.z0)+", r0 = "+str(self.r0)+", N = "+str(self.N)+", L = "+str(self.L)
+        return "I = "+str(self.I)+", x0 = "+str(self.x0)+", y0 = "+str(self.y0)+", z0 = "+str(self.z0)+", r0 = "+str(self.r0)+", N = "+str(self.N)+", L = "+str(self.L)
 
     def field(self,x,y,z):
         """
@@ -103,7 +105,7 @@ class Solenoid:
                 The magnetic field
         
         * Example
-            sol = solenoid(r0=0.5)
+            sol = Solenoid(r0=0.5)
             l = np.linspace(-1,1,10)
             x, y, z = np.meshgrid(l,l,l)
             Bx, By, Bz = sol.field(x, y, z)
@@ -139,7 +141,7 @@ class Solenoid:
             fig = sol.displaySolenoid()
             fig.savefig("sol.png")
         """
-        title = r"$B_0 = "+str(self.B0)+"T, x_0 = "+str(self.x0)+", y_0 = "+str(self.y0)+", z_0 = "+str(self.z0)+", r_0 = $"+str(self.r0)+", N = "+str(self.N)+", L = "+str(self.L)
+        title = r"$I = "+str(self.I)+"A, x_0 = "+str(self.x0)+", y_0 = "+str(self.y0)+", z_0 = "+str(self.z0)+", r_0 = $"+str(self.r0)+", N = "+str(self.N)+", L = "+str(self.L)
 
         fig = plt.figure(figsize=figsize)
         ax = fig.gca(projection='3d')
@@ -158,7 +160,7 @@ class Solenoid:
         
         return fig
     
-    def displayField3D(self,figsize=(10,10),nb_points=8,colorTile="red",colorArrow="blue",linewidth=3):
+    def displayField3D(self,figsize=(10,10),nb_points=8,colorTile="red",colorArrow="blue",linewidth=1):
         """
         To display the field in 3D
         * Arguments
@@ -171,30 +173,25 @@ class Solenoid:
             - colorArrow: string
                 color of the arrows
             - linewidth: float
-                thickness of the tile
+                thickness of the tiles
                 
         * Returns
             - fig: matplotlib.pyplot.figure
                 the figure
         * Example
-            sol = Solenoid(n = 100)
+            sol = Solenoid(n = 50)
             fig = sol.displayField3D()
             fig.savefig("sol_3D.png")
         """
         x, y, z = np.meshgrid(np.linspace(-3*self.r0+self.x0, 3*self.r0+self.x0, nb_points),
-                              np.linspace(-3*self.r0+self.y0, 3*self.r0+self.y0, nb_points)
+                              np.linspace(-3*self.r0+self.y0, 3*self.r0+self.y0, nb_points),
                               np.linspace(self.z0-self.L,self.z0+self.L, nb_points))
         x = np.concatenate(np.concatenate(x))
         y = np.concatenate(np.concatenate(y))
         z = np.concatenate(np.concatenate(z))
         Bx, By, Bz = self.field(x,y,z)
         
-        t = np.linspace(0,2*np.pi,100)
-        xs = self.x0 + self.r0*np.cos(t)
-        ys = self.y0 + self.r0*np.sin(t)
-        zs = self.z0*np.ones(len(t))
-        
-        title = r"$B_0 = "+str(self.B0)+"T, x_0 = "+str(self.x0)+", y_0 = "+str(self.y0)+", z_0 = "+str(self.z0)+", r_0 = $"+str(self.r0)
+        title = r"$I = "+str(self.I)+"A, x_0 = "+str(self.x0)+", y_0 = "+str(self.y0)+", z_0 = "+str(self.z0)+", r_0 = $"+str(self.r0)+", N = "+str(self.N)+", L = "+str(self.L)
         
         fig = plt.figure(figsize=figsize)
         ax = fig.gca(projection='3d')
@@ -203,7 +200,15 @@ class Solenoid:
         ax.set_zlabel(r"z",fontsize=15)
         ax.set_title(title,fontsize=15)
         ax.quiver(x, y, z, Bx, By, Bz, length=self.r0*0.2, normalize=True, color = colorArrow)
-        ax.plot(xs,ys,zs,color=colorTile,linewidth=linewidth)
+        
+        for tile in self.tiles:
+            t = np.linspace(0,2*np.pi,100)
+            xs = tile.x0 + tile.r0*np.cos(t)
+            ys = tile.y0 + tile.r0*np.sin(t)
+            zs = tile.z0*np.ones(len(t))
+            ax.plot(xs,ys,zs,color=colorTile,linewidth=linewidth)
+        
+        return fig
 
     def displayField2D(self,eq_0="y",figsize=(10,10),nb_points=20,color="blue",markTile=True):
         """
@@ -226,17 +231,18 @@ class Solenoid:
                 the figure
                 
         * Example
-            sol = Solenoid(1,1,2,3,5)
-            fig = sol.displayField2D()
+            sol = Solenoid(n=100)
+            fig = sol.displayField2D(figsize=(8,8))
             fig.savefig("sol_2D.png")
         """
         nb_points = int(nb_points)
         fig = plt.figure(figsize=figsize)
         
+        title = r"$I = "+str(self.I)+"A, x_0 = "+str(self.x0)+", y_0 = "+str(self.y0)+", z_0 = "+str(self.z0)+", r_0 = $"+str(self.r0)+", N = "+str(self.N)+", L = "+str(self.L)
         if eq_0 == "x":
             xlabel = r"$y$"
             ylabel = r"$z$"
-            title = r"x = "+str(self.x0)
+            title += r", $x = "+str(self.x0)+"$"
             x1, x2 = np.meshgrid(np.linspace(-3*self.r0+self.y0, 3*self.r0+self.y0, nb_points),np.linspace(self.z0-self.L,self.z0+self.L, nb_points))
             x3 = np.zeros_like(x1)+self.x0
             Bx3, Bx1, Bx2 = self.field(x3, x1, x2)
@@ -244,7 +250,7 @@ class Solenoid:
         elif eq_0 == "y":
             xlabel = r"$x$"
             ylabel = r"$z$"
-            title = r"y = "+str(self.y0)
+            title += r", $y = "+str(self.y0)+"$"
             x1, x2 = np.meshgrid(np.linspace(-3*self.r0+self.x0, 3*self.r0+self.x0, nb_points),np.linspace(self.z0-self.L,self.z0+self.L, nb_points))
             x3 = np.zeros_like(x1)+self.y0
             Bx1, Bx3, Bx2 = self.field(x1, x3, x2)
@@ -270,10 +276,37 @@ class Solenoid:
         plt.quiver(x1,x2,Bx1,Bx2,color=color)
             
                 
-        plt.title(r"$B_0 = $"+str(self.B0)+"$T$, "+title,fontsize=15)
+        plt.title(r"$I = $"+str(self.I)+"$A$, "+title,fontsize=15)
         plt.xlabel(xlabel,fontsize=15)
         plt.ylabel(ylabel,fontsize=15)
         plt.tight_layout()
 
         return fig
-
+    
+    def exportFieldMap(self,filename,xmin,xmax,ymin,ymax,zmin,zmax,nb_points):
+        """
+        To export a field map as a .txt file
+        
+        * Arguments
+            - filename: String
+                the name of the output file
+            - xmin: float
+                the x min coordinate
+            - xmax: float
+                the x max coordinate
+            - ymin: float
+                the y min coordinate
+            - ymax: float
+                the y max coordinate
+            - zmin: float
+                the z min coordinate
+            - zmax: float
+                the z max coordinate
+            - nb_points: int
+                number of points of evaluation on each axis
+        * Example
+            sol = Solenoid()
+            sol.exportFieldMap("output.txt",-1,1,-1,1,-1,1,20)
+        """
+        
+        return 0

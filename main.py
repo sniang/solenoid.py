@@ -16,10 +16,10 @@ tile = Tile(1,0,0,0,r0)
 Bx, By, Bz = tile.field(1,1,1)
 print(Bx, By, Bz)
 # warning : you cannot estimate the field on the tile
-#x0 = np.sqrt(r0)
-#y0 = x0
-#Bx, By, Bz = tile.field(x0, y0, 0)
-##print(Bx, By, Bz)
+x0 = np.sqrt(r0)
+y0 = x0
+Bx, By, Bz = tile.field(x0, y0, 0)
+print(Bx, By, Bz)
 
 # display the tile
 tile = Tile(1,1,2,3,5)
@@ -28,7 +28,7 @@ fig.savefig("tile.png")
 
 # display the field created by a tile in 2D
 tile = Tile(1,1,2,3,5)
-fig = tile.displayField2D()
+fig = tile.displayField2D(figsize=(8,8))
 fig.savefig("2D.png")
 
 # display the field created by a tile in 3D
@@ -37,12 +37,15 @@ fig = tile.displayField3D()
 fig.savefig("3D.png")
 
 
-# create a tile and compute the field
-r0 = 2
-sol = Solenoid(1,0,0,0,r0)
-Bx, By, Bz = sol.field(1,1,1)
-print(Bx, By, Bz)
+# create a solenoid and compute the field
+sol = Solenoid(r0=0.5)
+l = np.linspace(-1,1,10)
+x, y, z = np.meshgrid(l,l,l)
+Bx, By, Bz = sol.field(x, y, z)
 
+# To export a field map as a .txt file
+sol = Solenoid()
+sol.exportFieldMap("output.txt",-1,1,-1,1,-1,1,20)
 
 # display the solenoid
 sol = Solenoid(n=100)
@@ -51,11 +54,11 @@ fig.savefig("sol.png")
 
 # display the field created by a solenoid in 2D
 sol = Solenoid(n=100)
-fig = sol.displayField2D()
+fig = sol.displayField2D(figsize=(8,8))
 fig.savefig("sol_2D.png")
 
 # display the field created by a solenoid in 3D
-sol = Solenoid(n = 100)
+sol = Solenoid(n = 50)
 fig = sol.displayField3D()
 fig.savefig("sol_3D.png")
 

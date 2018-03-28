@@ -260,7 +260,7 @@ class Tile:
         plt.xlabel(xlabel,fontsize=15)
         plt.ylabel(ylabel,fontsize=15)
         plt.quiver(x1,x2,Bx1,Bx2,color=color)
-        plt.axis([min(np.concatenate(x1)),max(np.concatenate(x1)),min(np.concatenate(x2)),max(np.concatenate(x2))])
+        
         if markTile:
             plt.plot(dotx1,dotx2,'.',ms=15,color="red")
         plt.tight_layout()

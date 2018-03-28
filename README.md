@@ -48,6 +48,45 @@ x, y, z = np.meshgrid(l,l,l)
 Bx, By, Bz = tile.field(x, y, z)
 ```
 
+### Tile.exportFieldMap
+To export a field map as a .txt file
+
+* Arguments
+    - filename: String — the name of the output file
+    - xmin: float — the x min coordinate
+    - xmax: float — the x max coordinate
+    - ymin: float — the y min coordinate
+    - ymax: float — the y max coordinate
+    - zmin: float — the z min coordinate
+    - zmax: float — the z max coordinate
+    - nb_points: int — number of points of evaluation on each axis
+    
+* Example
+
+```python
+tile = Tile()
+tile.exportFieldMap("output_map.txt",-1,1,-1,1,-1,1,20)
+```  
+
+### Tile.exportField
+To export the field computed in some points as a .txt file
+
+* Arguments
+    - filename: String — the name of the output file
+    - x: 1D np.array(float) — the x coordinates
+    - y: 1D np.array(float) — the y coordinates
+    - z: 1D np.array(float) — the z coordinates
+    
+* Example
+
+```python
+z = np.linspace(-2,2,20)
+x = np.zeros_like(z)
+y = np.zeros_like(z)
+tile = Tile()
+tile.exportField("output.txt",x,y,z)
+```
+
 ### Tile.displayTile
 To display the tile
 
@@ -183,10 +222,30 @@ To export a field map as a .txt file
 * Example
 
 ```python
-sol.Solenoid()
-sol = exportFieldMap("output.txt",-1,1,-1,1,-1,1,20)
+sol = Solenoid(n=50)
+sol = exportFieldMap("output_map.txt",-1,1,-1,1,-1,1,20)
 ```  
+
+### Solenoid.exportField
+To export the field computed in some points as a .txt file
+
+* Arguments
+    - filename: String — the name of the output file
+    - x: 1D np.array(float) — the x coordinates
+    - y: 1D np.array(float) — the y coordinates
+    - z: 1D np.array(float) — the z coordinates
     
+* Example
+
+```python
+z = np.linspace(-2,2,20)
+x = np.zeros_like(z)
+y = np.zeros_like(z)
+sol = Solenoid(n=40)
+sol.exportField("output.txt",x,y,z)
+```
+
+        
 ### Solenoid.displaySolenoid
 To display the solenoid
 

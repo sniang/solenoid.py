@@ -44,8 +44,15 @@ x, y, z = np.meshgrid(l,l,l)
 Bx, By, Bz = sol.field(x, y, z)
 
 # To export a field map as a .txt file
-sol = Solenoid()
-sol.exportFieldMap("output.txt",-1,1,-1,1,-1,1,20)
+sol = Solenoid(n=50)
+sol.exportFieldMap("output_main.txt",-1,1,-1,1,-1,1,20)
+
+# To export the field computed in some points as a .txt file
+z = np.linspace(-2,2,20)
+x = np.zeros_like(z)
+y = np.zeros_like(z)
+sol = Solenoid(n=40)
+sol.exportField("output.txt",x,y,z)
 
 # display the solenoid
 sol = Solenoid(n=100)

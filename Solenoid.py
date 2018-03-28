@@ -305,8 +305,45 @@ class Solenoid:
             - nb_points: int
                 number of points of evaluation on each axis
         * Example
-            sol = Solenoid()
-            sol.exportFieldMap("output.txt",-1,1,-1,1,-1,1,20)
+            sol = Solenoid(n=50)
+            sol.exportFieldMap("output_map.txt",-1,1,-1,1,-1,1,20)
         """
         
-        return 0
+        x, y, z = np.meshgrid(np.linspace(xmin,xmax,nb_points),
+                              np.linspace(ymin,ymax,nb_points),
+                              np.linspace(zmin,zmax,nb_points))
+        x = np.concatenate(np.concatenate(x))
+        y = np.concatenate(np.concatenate(y))
+        z = np.concatenate(np.concatenate(z))
+        Bx, By, Bz = self.field(x,y,z)
+        
+        with open(filename,'w') as f:
+            for i in np.arange(len(x)):
+                f.write(str(x[i])+'\t'+str(y[i])+'\t'+str(z[i])+'\t'+str(Bx[i])+'\t'+str(By[i])+'\t'+str(Bz[i])+'\n')
+
+    def exportField(self,filename,x,y,z):
+        """
+        To export the field computed in some points as a .txt file
+        
+        * Arguments
+            - filename: String
+                the name of the output file
+            - x: 1D np.array(float)
+                the x coordinates
+            - y: 1D np.array(float)
+                the y coordinates
+            - z: 1D np.array(float)
+                the z coordinates
+        * Example
+            z = np.linspace(-2,2,20)
+            x = np.zeros_like(z)
+            y = np.zeros_like(z)
+            sol = Solenoid(n=40)
+            sol.exportField("output.txt",x,y,z)
+        """
+        
+        Bx, By, Bz = self.field(x,y,z)
+        
+        with open(filename,'w') as f:
+            for i in np.arange(len(x)):
+                f.write(str(x[i])+'\t'+str(y[i])+'\t'+str(z[i])+'\t'+str(Bx[i])+'\t'+str(By[i])+'\t'+str(Bz[i])+'\n')

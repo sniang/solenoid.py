@@ -85,7 +85,7 @@ class Tile:
             r = np.sqrt(x1**2+y1**2)
             a = r/self.r0
             b = z1/self.r0
-            c = z1/r
+            
             Q = (1+a)**2 + b**2
             m = 4*a/Q
             
@@ -103,7 +103,7 @@ class Tile:
             
             c1 = x1/r
             s1 = y1/r
-    
+            c = z1/r
             Bz = self.B0/(np.pi*np.sqrt(Q))*(E(m)*(1-a**2-b**2)/(Q-4*a)+K(m))
             Br = self.B0*c/(np.pi*np.sqrt(Q))*(E(m)*(1+a**2+b**2)/(Q-4*a)-K(m))
             Bx = Br*c1
@@ -266,3 +266,68 @@ class Tile:
         plt.tight_layout()
 
         return fig
+
+    def exportFieldMap(self,filename,xmin,xmax,ymin,ymax,zmin,zmax,nb_points):
+        """
+        To export a field map as a .txt file
+        
+        * Arguments
+            - filename: String
+                the name of the output file
+            - xmin: float
+                the x min coordinate
+            - xmax: float
+                the x max coordinate
+            - ymin: float
+                the y min coordinate
+            - ymax: float
+                the y max coordinate
+            - zmin: float
+                the z min coordinate
+            - zmax: float
+                the z max coordinate
+            - nb_points: int
+                number of points of evaluation on each axis
+        * Example
+            tile = Tile()
+            tile.exportFieldMap("output_map.txt",-1,1,-1,1,-1,1,20)
+        """
+        
+        x, y, z = np.meshgrid(np.linspace(xmin,xmax,nb_points),
+                              np.linspace(ymin,ymax,nb_points),
+                              np.linspace(zmin,zmax,nb_points))
+        x = np.concatenate(np.concatenate(x))
+        y = np.concatenate(np.concatenate(y))
+        z = np.concatenate(np.concatenate(z))
+        Bx, By, Bz = self.field(x,y,z)
+        
+        with open(filename,'w') as f:
+            for i in np.arange(len(x)):
+                f.write(str(x[i])+'\t'+str(y[i])+'\t'+str(z[i])+'\t'+str(Bx[i])+'\t'+str(By[i])+'\t'+str(Bz[i])+'\n')
+
+    def exportField(self,filename,x,y,z):
+        """
+        To export the field computed in some points as a .txt file
+        
+        * Arguments
+            - filename: String
+                the name of the output file
+            - x: 1D np.array(float)
+                the x coordinates
+            - y: 1D np.array(float)
+                the y coordinates
+            - z: 1D np.array(float)
+                the z coordinates
+        * Example
+            z = np.linspace(-2,2,20)
+            x = np.zeros_like(z)
+            y = np.zeros_like(z)
+            tile = Tile()
+            tile.exportField("output.txt",x,y,z)
+        """
+        
+        Bx, By, Bz = self.field(x,y,z)
+        
+        with open(filename,'w') as f:
+            for i in np.arange(len(x)):
+                f.write(str(x[i])+'\t'+str(y[i])+'\t'+str(z[i])+'\t'+str(Bx[i])+'\t'+str(By[i])+'\t'+str(Bz[i])+'\n')

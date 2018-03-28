@@ -15,6 +15,7 @@ r0 = 2
 tile = Tile(1,0,0,0,r0)
 Bx, By, Bz = tile.field(1,1,1)
 print(Bx, By, Bz)
+
 # warning : you cannot estimate the field on the tile
 x0 = np.sqrt(r0)
 y0 = x0
@@ -68,5 +69,4 @@ fig.savefig("sol_2D.png")
 sol = Solenoid(n = 50)
 fig = sol.displayField3D()
 fig.savefig("sol_3D.png")
-
 

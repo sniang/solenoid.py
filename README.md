@@ -1,35 +1,35 @@
 # solenoid.py
 To simulate solenoids and compute the magnetic field
 
-## Class Tile.py
-To simulate the tile
+## Class Loop.py
+To simulate the loop
 
 * Attributes
-    - self.B0: float — magnetic field at the center of the tile
-    - self.x0: float — the x position of the tile
-    - self.y0: float — the y position of the tile
-    - self.z0: float — the z position of the tile
-    - self.r0: float — the radius of the tile
+    - self.B0: float — magnetic field at the center of the loop
+    - self.x0: float — the x position of the loop
+    - self.y0: float — the y position of the loop
+    - self.z0: float — the z position of the loop
+    - self.r0: float — the radius of the loop
     
-### Tile (constructor)
-To create the tile
+### Loop (constructor)
+To create the loop
 
 * Arguments
-     - B0: float — magnetic field at the center of the tile
-     - x0: float — the x position of the tile
-     - y0: float — the y position of the tile
-     - z0: float — the z position of the tile
-     - r0: float — the radius of the tile
+     - B0: float — magnetic field at the center of the loop
+     - x0: float — the x position of the loop
+     - y0: float — the y position of the loop
+     - z0: float — the z position of the loop
+     - r0: float — the radius of the loop
 * Example
 
 ```python
-tile = Tile(1,1,2,3,5)
+loop = Loop(1,1,2,3,5)
 ```
 
-### Tile.field
-To compute the magnetic field produced by the tile. 
+### Loop.field
+To compute the magnetic field produced by the loop. 
 
-Be careful, you cannot estimate the field on the tile. In that cas, the field value is ```nan```.
+Be careful, you cannot estimate the field on the loop. In that cas, the field value is ```nan```.
 
 * Arguments
      - x: float — the x coordinate
@@ -42,13 +42,13 @@ Be careful, you cannot estimate the field on the tile. In that cas, the field va
 * Example
 
 ```python
-tile = Tile(1,1,2,3,5)
+loop = Loop(1,1,2,3,5)
 l = np.linspace(-1,1,10)
 x, y, z = np.meshgrid(l,l,l)
-Bx, By, Bz = tile.field(x, y, z)
+Bx, By, Bz = loop.field(x, y, z)
 ```
 
-### Tile.exportFieldMap
+### Loop.exportFieldMap
 To export a field map as a .txt file
 
 * Arguments
@@ -64,11 +64,11 @@ To export a field map as a .txt file
 * Example
 
 ```python
-tile = Tile()
-tile.exportFieldMap("output_map.txt",-1,1,-1,1,-1,1,20)
+loop = Loop()
+loop.exportFieldMap("output_map.txt",-1,1,-1,1,-1,1,20)
 ```  
 
-### Tile.exportField
+### Loop.exportField
 To export the field computed in some points as a .txt file
 
 * Arguments
@@ -83,38 +83,38 @@ To export the field computed in some points as a .txt file
 z = np.linspace(-2,2,20)
 x = np.zeros_like(z)
 y = np.zeros_like(z)
-tile = Tile()
-tile.exportField("output.txt",x,y,z)
+loop = Loop()
+loop.exportField("output.txt",x,y,z)
 ```
 
-### Tile.displayTile
-To display the tile
+### Loop.displayLoop
+To display the loop
 
 * Arguments
      - figsize: (float,float) — to determine the size of the figure
-     - color: string — color of the tile
-     - linewidth: float — thickness of the tile
+     - color: string — color of the loop
+     - linewidth: float — thickness of the loop
 * Returns
      - fig: matplotlib.pyplot.figure — the figure
 
 * Example
 
 ```python
-tile = Tile(1,1,2,3,5)
-fig = tile.displayTile()
-fig.savefig("tile.png")
+loop = Loop(1,1,2,3,5)
+fig = loop.displayLoop()
+fig.savefig("loop.png")
 ```
 
-![tile display](tile.png "tile display")
-### Tile.displayField3D()
+![loop display](loop.png "loop display")
+### Loop.displayField3D()
 To display the field
 
 * Arguments
      - figsize: (float,float) — to determine the size of the figure
      - nb_points: int — number of points of evaluation on each axis
-     - colorTile: string — color of the tile
+     - colorLoop: string — color of the loop
      - colorArrow: string — color of the arrows
-     - linewidth: float — thickness of the tile
+     - linewidth: float — thickness of the loop
 
 * Returns
      - fig: matplotlib.pyplot.figure — the figure
@@ -122,14 +122,14 @@ To display the field
 * Example
 
 ```python
-tile = Tile(1,1,2,3,5)
-fig = tile.displayField3D()
+loop = Loop(1,1,2,3,5)
+fig = loop.displayField3D()
 fig.savefig("3D.png")
 ```
 
 ![field in 3D](3D.png "field in 3D")
 
-### Tile.displayField2D
+### Loop.displayField2D
 To display the field in a plan x=0, y=0 or z=0
 
 * Arguments
@@ -137,15 +137,15 @@ To display the field in a plan x=0, y=0 or z=0
      - figsize: (float,float) — to determine the size of the figure
      - nb_points: int — number of points of evaluation on each axis
      - color: string — color of the arrows
-     - markTile: boolean — To diplay the position of the tile
+     - markLoop: boolean — To diplay the position of the loop
 * Returns
      - fig: matplotlib.pyplot.figure — the figure
 
 * Example
 
 ```python
-tile = Tile(1,1,2,3,5)
-fig = tile.displayField2D()
+loop = Loop(1,1,2,3,5)
+fig = loop.displayField2D()
 fig.savefig("2D.png")
 ```
 ![field in 2D](2D.png "field in 2D")
@@ -157,14 +157,14 @@ To simulate a solenoid
     - I: float — the current intensity
     - self.B0: float — magnetic field inside the solenoid if it were infinite
     - self.L: float — the length of the solenoid in meter
-    - self.n: float — number of tiles per meter
-    - self.x0: float — the x position of the tile
-    - self.y0: float — the y position of the tile
-    - self.z0: float — the z position of the tile
-    - self.r0: float — the radius of the tile
+    - self.n: float — number of loops per meter
+    - self.x0: float — the x position of the loop
+    - self.y0: float — the y position of the loop
+    - self.z0: float — the z position of the loop
+    - self.r0: float — the radius of the loop
     - self.axis: string — the axis of the solenoid
-    - self.N: int(n*L) — number of tiles
-    - self.tiles: array(Tile) — the tiles
+    - self.N: int(n*L) — number of loops
+    - self.loops: array(Loop) — the loops
         
 ### Solenoid (constructor)
 The constructor
@@ -172,11 +172,11 @@ The constructor
 * Arguments
     - I: float — the current intensity
     - L: float — the length of the solenoid in meter
-    - n: float — number of tiles per meter
-    - x0: float — the x position of the tile
-    - y0: float — the y position of the tile
-    - z0: float — the z position of the tile
-    - r0: float — the radius of the tile
+    - n: float — number of loops per meter
+    - x0: float — the x position of the loop
+    - y0: float — the y position of the loop
+    - z0: float — the z position of the loop
+    - r0: float — the radius of the loop
     - axis: string (for now, the only acceptable value is "z") — the axis of the solenoid
 
 * Example
@@ -251,8 +251,8 @@ To display the solenoid
 
 * Arguments
     - figsize: (float,float) — to determine the size of the figure
-    - color: string — color of the tile
-    - linewidth: float — thickness of the tile
+    - color: string — color of the loop
+    - linewidth: float — thickness of the loop
 * Returns
     - fig: matplotlib.pyplot.figure — the figure
         
@@ -270,9 +270,9 @@ To display the field in 3D
 * Arguments
     - figsize: (float,float) — to determine the size of the figure
     - nb_points: int — number of points of evaluation on each axis
-    - colorTile: string — color of the tiles
+    - colorLoop: string — color of the loops
     - colorArrow: string — color of the arrows
-    - linewidth: float — thickness of the tiles
+    - linewidth: float — thickness of the loops
         
 * Returns
     - fig: matplotlib.pyplot.figure — the figure
@@ -293,7 +293,7 @@ To display the field in a plan x=0, y=0 or z=0
     - figsize: (float,float) — to determine the size of the figure
     - nb_points: int — number of points of evaluation on each axis
     - color: string — color of the arrows
-    - markTile: boolean — To diplay the position of the tiles
+    - markLoop: boolean — To diplay the position of the loops
     
 * Returns
     - fig: matplotlib.pyplot.figure — the figure

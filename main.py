@@ -6,35 +6,35 @@ https://github.com/sniang/solenoid.py
 """
 
 from Solenoid import *
-from Tile import *
+from Loop import *
 import numpy as np
 
 
-# create a tile and compute the field
+# create a loop and compute the field
 r0 = 2
-tile = Tile(1,0,0,0,r0)
-Bx, By, Bz = tile.field(1,1,1)
+loop = Loop(1,0,0,0,r0)
+Bx, By, Bz = loop.field(1,1,1)
 print(Bx, By, Bz)
 
-# warning : you cannot estimate the field on the tile
+# warning : you cannot estimate the field on the loop
 x0 = np.sqrt(r0)
 y0 = x0
-Bx, By, Bz = tile.field(x0, y0, 0)
+Bx, By, Bz = loop.field(x0, y0, 0)
 print(Bx, By, Bz)
 
-# display the tile
-tile = Tile(1,1,2,3,5)
-fig = tile.displayTile()
-fig.savefig("tile.png")
+# display the loop
+loop = Loop(1,1,2,3,5)
+fig = loop.displayLoop()
+fig.savefig("loop.png")
 
-# display the field created by a tile in 2D
-tile = Tile(1,1,2,3,5)
-fig = tile.displayField2D(figsize=(8,8))
+# display the field created by a loop in 2D
+loop = Loop(1,1,2,3,5)
+fig = loop.displayField2D(figsize=(8,8))
 fig.savefig("2D.png")
 
-# display the field created by a tile in 3D
-tile = Tile(1,1,2,3,5)
-fig = tile.displayField3D()
+# display the field created by a loop in 3D
+loop = Loop(1,1,2,3,5)
+fig = loop.displayField3D()
 fig.savefig("3D.png")
 
 

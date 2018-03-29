@@ -10,39 +10,39 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import warnings
 
-class Tile:
+class Loop:
     """
-    To simulate the tile
+    To simulate the loop
     
     * Attributes
         - self.B0: float
-            magnetic field at the center of the tile
+            magnetic field at the center of the loop
         - self.x0: float
-            the x position of the tile
+            the x position of the loop
         - self.y0: float
-            the y position of the tile
+            the y position of the loop
         - self.z0: float
-            the z position of the tile
+            the z position of the loop
         - self.r0: float
-            the radius of the tile
+            the radius of the loop
     """
     def __init__(self,B0=1,x0=0,y0=0,z0=0,r0=1):
         """
         The constructor
         * Arguments
             - B0: float
-                magnetic field at the center of the tile
+                magnetic field at the center of the loop
             - x0: float
-                the x position of the tile
+                the x position of the loop
             - y0: float
-                the y position of the tile
+                the y position of the loop
             - z0: float
-                the z position of the tile
+                the z position of the loop
             - r0: float
-                the radius of the tile
+                the radius of the loop
                 
         * Example
-            tile = Tile(1,1,2,3,5) 
+            loop = Loop(1,1,2,3,5) 
         """
         self.B0 = B0
         self.x0 = x0
@@ -55,7 +55,7 @@ class Tile:
 
     def field(self,x,y,z):
         """
-        To compute the magnetic field produced by the tile
+        To compute the magnetic field produced by the loop
         
         * Arguments
             - x: float
@@ -70,10 +70,10 @@ class Tile:
                 The magnetic field
         
         * Example
-            tile = Tile(1,1,2,3,5)
+            loop = Loop(1,1,2,3,5)
             l = np.linspace(-1,1,10)
             x, y, z = np.meshgrid(l,l,l)
-            Bx, By, Bz = tile.field(x, y, z)
+            Bx, By, Bz = loop.field(x, y, z)
         """
         x = x-self.x0
         y = y-self.y0
@@ -90,7 +90,7 @@ class Tile:
             m = 4*a/Q
             
             if r == self.r0 and z1 == 0:
-                warnings.warn("Warning : you cannot estimate the field on the tile")
+                warnings.warn("Warning : you cannot estimate the field on the loop")
                 return np.nan, np.nan, np.nan
             if r == 0:
                 ca = self.r0/np.sqrt(self.r0**2+z1**2)
@@ -113,25 +113,25 @@ class Tile:
         return vect(x,y,z)
 
 
-    def displayTile(self,figsize=(10,10),color="red",linewidth=3):
+    def displayLoop(self,figsize=(10,10),color="red",linewidth=3):
         """
-        To display the tile
+        To display the loop
         
         * Arguments
             - figsize: (float,float)
                 to determine the size of the figure
             - color: string
-                color of the tile
+                color of the loop
             - linewidth: float
-                thickness of the tile
+                thickness of the loop
         * Returns
             - fig: matplotlib.pyplot.figure
                 the figure
                 
         * Example
-            tile = Tile(1,1,2,3,5)
-            fig = tile.displayTile()
-            fig.savefig("tile.png")
+            loop = Loop(1,1,2,3,5)
+            fig = loop.displayLoop()
+            fig.savefig("loop.png")
         """
         t = np.linspace(0,2*np.pi,100)
         xs = self.x0 + self.r0*np.cos(t)
@@ -150,7 +150,7 @@ class Tile:
         
         return fig
     
-    def displayField3D(self,figsize=(10,10),nb_points=8,colorTile="red",colorArrow="blue",linewidth=3):
+    def displayField3D(self,figsize=(10,10),nb_points=8,colorLoop="red",colorArrow="blue",linewidth=3):
         """
         To display the field
         * Arguments
@@ -158,19 +158,19 @@ class Tile:
                 to determine the size of the figure
             - nb_points: int
                 number of points of evaluation on each axis
-            - colorTile: string
-                color of the tile
+            - colorLoop: string
+                color of the loop
             - colorArrow: string
                 color of the arrows
             - linewidth: float
-                thickness of the tile
+                thickness of the loop
                 
         * Returns
             - fig: matplotlib.pyplot.figure
                 the figure
         * Example
-            tile = Tile(1,1,2,3,5)
-            fig = tile.displayField3D()
+            loop = Loop(1,1,2,3,5)
+            fig = loop.displayField3D()
             fig.savefig("3D.png")
         """
         x, y, z = np.meshgrid(np.linspace(-2*self.r0+self.x0, 2*self.r0+self.x0, nb_points),
@@ -195,11 +195,11 @@ class Tile:
         ax.set_zlabel(r"z",fontsize=15)
         ax.set_title(title,fontsize=15)
         ax.quiver(x, y, z, Bx, By, Bz, length=self.r0*0.2, normalize=True, color = colorArrow)
-        ax.plot(xs,ys,zs,color=colorTile,linewidth=linewidth)
+        ax.plot(xs,ys,zs,color=colorLoop,linewidth=linewidth)
 
         return fig
         
-    def displayField2D(self,eq_0="y",figsize=(10,10),nb_points=20,color="blue",markTile=True):
+    def displayField2D(self,eq_0="y",figsize=(10,10),nb_points=20,color="blue",markLoop=True):
         """
         To display the field in a plan x=0, y=0 or z=0
 
@@ -213,15 +213,15 @@ class Tile:
                 number of points of evaluation on each axis
             - color: string
                 color of the arrows
-            - markTile: boolean
-                To diplay the position of the tile
+            - markLoop: boolean
+                To diplay the position of the loop
         * Returns
             - fig: matplotlib.pyplot.figure
                 the figure
                 
         * Example
-            tile = Tile(1,1,2,3,5)
-            fig = tile.displayField2D()
+            loop = Loop(1,1,2,3,5)
+            fig = loop.displayField2D()
             fig.savefig("2D.png")
         """
         nb_points = int(nb_points)
@@ -261,7 +261,7 @@ class Tile:
         plt.ylabel(ylabel,fontsize=15)
         plt.quiver(x1,x2,Bx1,Bx2,color=color)
         
-        if markTile:
+        if markLoop:
             plt.plot(dotx1,dotx2,'.',ms=15,color="red")
         plt.tight_layout()
 
@@ -289,8 +289,8 @@ class Tile:
             - nb_points: int
                 number of points of evaluation on each axis
         * Example
-            tile = Tile()
-            tile.exportFieldMap("output_map.txt",-1,1,-1,1,-1,1,20)
+            loop = Loop()
+            loop.exportFieldMap("output_map.txt",-1,1,-1,1,-1,1,20)
         """
         
         x, y, z = np.meshgrid(np.linspace(xmin,xmax,nb_points),
@@ -322,8 +322,8 @@ class Tile:
             z = np.linspace(-2,2,20)
             x = np.zeros_like(z)
             y = np.zeros_like(z)
-            tile = Tile()
-            tile.exportField("output.txt",x,y,z)
+            loop = Loop()
+            loop.exportField("output.txt",x,y,z)
         """
         
         Bx, By, Bz = self.field(x,y,z)

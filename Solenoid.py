@@ -7,7 +7,7 @@ https://github.com/sniang/solenoid.py
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-from Tile import *
+from Loop import *
 
 class Solenoid:
     """
@@ -21,21 +21,21 @@ class Solenoid:
         - self.L: float
             the length of the solenoid in meter
         - self.n: float
-            number of tiles per meter
+            number of loops per meter
         - self.x0: float
-            the x position of the tile
+            the x position of the loop
         - self.y0: float
-            the y position of the tile
+            the y position of the loop
         - self.z0: float
-            the z position of the tile
+            the z position of the loop
         - self.r0: float
-            the radius of the tile
+            the radius of the loop
         - self.axis: string
             the axis of the solenoid
         - self.N: int(n*L)
-            number of tiles
-        - self.tiles: array(Tile)
-            the tiles
+            number of loops
+        - self.loops: array(Loop)
+            the loops
         
     """
     def __init__(self,I=400,L=1,n=2000,x0=0,y0=0,z0=0,r0=0.5,axis="z"):
@@ -48,15 +48,15 @@ class Solenoid:
         - L: float
             the length of the solenoid in meter
         - n: float
-            number of tiles per meter
+            number of loops per meter
         - x0: float
-            the x position of the tile
+            the x position of the loop
         - y0: float
-            the y position of the tile
+            the y position of the loop
         - z0: float
-            the z position of the tile
+            the z position of the loop
         - r0: float
-            the radius of the tile
+            the radius of the loop
         - axis: string (for now, the only acceptable value is "z")
             the axis of the solenoid
         
@@ -75,13 +75,13 @@ class Solenoid:
         self.N = int(n*L)
         N = self.N
         d = L/(N-1)
-        self.tiles = []
+        self.loops = []
         self.I = I
         
         b0 = I*mu0/2/r0
         
         for i in np.arange(N) :
-         self.tiles.append(Tile(b0,x0=x0,y0=x0,z0=z0-L/2+i*d,r0=r0))
+         self.loops.append(Loop(b0,x0=x0,y0=x0,z0=z0-L/2+i*d,r0=r0))
         
         
 
@@ -114,8 +114,8 @@ class Solenoid:
         By = 0
         Bz = 0
         
-        for tile in self.tiles:
-            bx, by, bz = tile.field(x,y,z)
+        for loop in self.loops:
+            bx, by, bz = loop.field(x,y,z)
             Bx += bx
             By += by
             Bz += bz
@@ -129,9 +129,9 @@ class Solenoid:
             - figsize: (float,float)
                 to determine the size of the figure
             - color: string
-                color of the tile
+                color of the loop
             - linewidth: float
-                thickness of the tile
+                thickness of the loop
         * Returns
             - fig: matplotlib.pyplot.figure
                 the figure
@@ -152,15 +152,15 @@ class Solenoid:
         
         t = np.linspace(0,2*np.pi,100)
         
-        for tile in self.tiles:
-            xs = tile.x0 + tile.r0*np.cos(t)
-            ys = tile.y0 + tile.r0*np.sin(t)
-            zs = tile.z0*np.ones(len(t))
+        for loop in self.loops:
+            xs = loop.x0 + loop.r0*np.cos(t)
+            ys = loop.y0 + loop.r0*np.sin(t)
+            zs = loop.z0*np.ones(len(t))
             ax.plot(xs,ys,zs,color=color,linewidth=linewidth)
         
         return fig
     
-    def displayField3D(self,figsize=(10,10),nb_points=8,colorTile="red",colorArrow="blue",linewidth=1):
+    def displayField3D(self,figsize=(10,10),nb_points=8,colorLoop="red",colorArrow="blue",linewidth=1):
         """
         To display the field in 3D
         * Arguments
@@ -168,12 +168,12 @@ class Solenoid:
                 to determine the size of the figure
             - nb_points: int
                 number of points of evaluation on each axis
-            - colorTile: string
-                color of the tiles
+            - colorLoop: string
+                color of the loops
             - colorArrow: string
                 color of the arrows
             - linewidth: float
-                thickness of the tiles
+                thickness of the loops
                 
         * Returns
             - fig: matplotlib.pyplot.figure
@@ -201,16 +201,16 @@ class Solenoid:
         ax.set_title(title,fontsize=15)
         ax.quiver(x, y, z, Bx, By, Bz, length=self.r0*0.2, normalize=True, color = colorArrow)
         
-        for tile in self.tiles:
+        for loop in self.loops:
             t = np.linspace(0,2*np.pi,100)
-            xs = tile.x0 + tile.r0*np.cos(t)
-            ys = tile.y0 + tile.r0*np.sin(t)
-            zs = tile.z0*np.ones(len(t))
-            ax.plot(xs,ys,zs,color=colorTile,linewidth=linewidth)
+            xs = loop.x0 + loop.r0*np.cos(t)
+            ys = loop.y0 + loop.r0*np.sin(t)
+            zs = loop.z0*np.ones(len(t))
+            ax.plot(xs,ys,zs,color=colorLoop,linewidth=linewidth)
         
         return fig
 
-    def displayField2D(self,eq_0="y",figsize=(10,10),nb_points=20,color="blue",markTile=True):
+    def displayField2D(self,eq_0="y",figsize=(10,10),nb_points=20,color="blue",markLoop=True):
         """
         To display the field in a plan x=0, y=0 or z=0
 
@@ -224,8 +224,8 @@ class Solenoid:
                 number of points of evaluation on each axis
             - color: string
                 color of the arrows
-            - markTile: boolean
-                To diplay the position of the tiles
+            - markLoop: boolean
+                To diplay the position of the loops
         * Returns
             - fig: matplotlib.pyplot.figure
                 the figure
@@ -258,15 +258,15 @@ class Solenoid:
             print("Your choice of plan is incorrect")
             return fig
         
-        if markTile:
-            for tile in self.tiles:
+        if markLoop:
+            for loop in self.loops:
                 if eq_0 == "x":
-                    dotx1 = np.array([-tile.r0,tile.r0])+tile.y0
-                    dotx2 = [tile.z0,tile.z0]
+                    dotx1 = np.array([-loop.r0,loop.r0])+loop.y0
+                    dotx2 = [loop.z0,loop.z0]
                 elif eq_0 == "y":
                     
-                    dotx1 = np.array([-tile.r0,tile.r0])+tile.x0
-                    dotx2 = [tile.z0,tile.z0]
+                    dotx1 = np.array([-loop.r0,loop.r0])+loop.x0
+                    dotx2 = [loop.z0,loop.z0]
                 plt.plot(dotx1,dotx2,'.',ms=5,color="red")
             
         no = np.sqrt(Bx1**2+Bx2**2+Bx3**2)

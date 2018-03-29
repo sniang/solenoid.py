@@ -65,6 +65,7 @@ class Solenoid:
             print(sol)
         """
         mu0 = 4E-7*np.pi
+        self.mu0 = mu0
         self.B0 = mu0*n*I
         self.L = L
         self.n = n
@@ -347,3 +348,50 @@ class Solenoid:
         with open(filename,'w') as f:
             for i in np.arange(len(x)):
                 f.write(str(x[i])+'\t'+str(y[i])+'\t'+str(z[i])+'\t'+str(Bx[i])+'\t'+str(By[i])+'\t'+str(Bz[i])+'\n')
+    
+    def plotFieldMainAxis(self,zmin,zmax,nbpoints=100,figsize=(8,5)):
+        """
+        To plot the field on the main axis
+        
+        * Arguments
+            - zmin: float
+                the z min coordinate
+            - zmax: float
+                the z max coordinate
+            - nbpoints: int
+                number of points of evaluation
+            - figsize: (float,float)
+                the size of the figure
+                
+        * Returns
+            - fig: matplotlib.pyplot.figure
+                the figure
+                
+        * Example
+            sol = Solenoid(n = 1000, I = 100,L = 5, z0 = 33)
+            fig = sol.plotFieldMainAxis(zmin=-sol.L,zmax=sol.L)
+            fig.savefig("axis_sol.png")
+        """
+        
+        nbpoints = int(nbpoints)
+        z = np.linspace(zmin,zmax,nbpoints)+self.z0
+        x = np.zeros_like(z)+self.x0
+        y = np.zeros_like(z)+self.y0
+        
+        Bx, By, Bz = self.field(x,y,z)
+
+        fig = plt.figure(figsize=figsize)
+
+        plt.plot(z,Bz)
+        plt.xlabel(r"$z$ $(m)$",fontsize=15)
+        plt.ylabel(r"$B_z$ $(T)$",fontsize=15)
+        plt.title("Magnetic field on the main axis",fontsize=15)
+        plt.axis([min(z),max(z),min(Bz),max(Bz)*1.1])
+        plt.grid()
+
+        
+        plt.tight_layout()
+        
+        return fig
+        
+        

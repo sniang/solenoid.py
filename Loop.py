@@ -331,3 +331,48 @@ class Loop:
         with open(filename,'w') as f:
             for i in np.arange(len(x)):
                 f.write(str(x[i])+'\t'+str(y[i])+'\t'+str(z[i])+'\t'+str(Bx[i])+'\t'+str(By[i])+'\t'+str(Bz[i])+'\n')
+                
+    def plotFieldMainAxis(self,zmin,zmax,nbpoints=100,figsize=(8,5)):
+        """
+        To plot the field on the main axis
+        
+        * Arguments
+            - zmin: float
+                the z min coordinate
+            - zmax: float
+                the z max coordinate
+            - nbpoints: int
+                number of points of evaluation
+            - figsize: (float,float)
+                the size of the figure
+                
+        * Returns
+            - fig: matplotlib.pyplot.figure
+                the figure
+                
+        * Example
+            loop = Loop(B0=0.1)
+            fig = loop.plotFieldMainAxis(zmin=-5,zmax=5)
+            fig.savefig("axis_loop.png")
+        """
+        
+        nbpoints = int(nbpoints)
+        z = np.linspace(zmin,zmax,nbpoints)+self.z0
+        x = np.zeros_like(z)+self.x0
+        y = np.zeros_like(z)+self.y0
+        
+        Bx, By, Bz = self.field(x,y,z)
+
+        fig = plt.figure(figsize=figsize)
+
+        plt.plot(z,Bz)
+        plt.xlabel(r"$z$ $(m)$",fontsize=15)
+        plt.ylabel(r"$B_z$ $(T)$",fontsize=15)
+        plt.title("Magnetic field on the main axis",fontsize=15)
+        plt.axis([min(z),max(z),min(Bz),max(Bz)*1.1])
+        plt.grid()
+
+        
+        plt.tight_layout()
+        
+        return fig

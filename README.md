@@ -42,6 +42,8 @@ Be careful, you cannot estimate the field on the loop. In that cas, the field va
 * Example
 
 ```python
+import numpy as np
+
 loop = Loop(1,1,2,3,5)
 l = np.linspace(-1,1,10)
 x, y, z = np.meshgrid(l,l,l)
@@ -80,12 +82,35 @@ To export the field computed in some points as a .txt file
 * Example
 
 ```python
+import numpy as np
+
 z = np.linspace(-2,2,20)
 x = np.zeros_like(z)
 y = np.zeros_like(z)
 loop = Loop()
 loop.exportField("output.txt",x,y,z)
 ```
+
+### Loop.plotFieldMainAxis
+To plot the field on the main axis
+
+* Arguments
+    - zmin: float — the z min coordinate
+    - zmax: float — the z max coordinate
+    - nbpoints: int — number of points of evaluation
+    - figsize: (float,float) — the size of the figure
+        
+* Returns
+    - fig: matplotlib.pyplot.figure — the figure
+        
+* Example
+
+```python
+loop = Loop(B0=0.1)
+fig = loop.plotFieldMainAxis(zmin=-5,zmax=5)
+fig.savefig("axis_loop.png")
+```
+![main axis field](axis_loop.png "main axis field")
 
 ### Loop.displayLoop
 To display the loop
@@ -200,6 +225,8 @@ To compute the magnetic field produced by the solenoid
 * Example
 
 ```python
+import numpy as np
+
 sol = Solenoid(r0=0.5)
 l = np.linspace(-1,1,10)
 x, y, z = np.meshgrid(l,l,l)
@@ -238,12 +265,35 @@ To export the field computed in some points as a .txt file
 * Example
 
 ```python
+import numpy as np
+
 z = np.linspace(-2,2,20)
 x = np.zeros_like(z)
 y = np.zeros_like(z)
 sol = Solenoid(n=40)
 sol.exportField("output.txt",x,y,z)
 ```
+
+### Solenoid.plotFieldMainAxis
+To plot the field on the main axis
+
+* Arguments
+    - zmin: float — the z min coordinate
+    - zmax: float — the z max coordinate
+    - nbpoints: int — number of points of evaluation
+    - figsize: (float,float) — the size of the figure
+        
+* Returns
+    - fig: matplotlib.pyplot.figure — the figure
+        
+* Example
+
+```python
+sol = Solenoid(n = 1000, I = 100,L = 5, z0 = 33)
+fig = sol.plotFieldMainAxis(zmin=-sol.L,zmax=sol.L)
+fig.savefig("axis_sol.png")
+```
+![main axis field](axis_sol.png "main axis field")
 
         
 ### Solenoid.displaySolenoid

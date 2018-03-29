@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 @author: samuel.niang@cern.ch
-https://github.com/sniang/solenoid.py
+https://github.com/sniang/Solenoyds
+https://sniang.github.io/Solenoyds
 """
 import numpy as np
 from scipy import special

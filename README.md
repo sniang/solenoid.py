@@ -23,6 +23,7 @@ To create the loop
 * Example
 
 ```python
+from Solenoyds.Loop import Loop
 loop = Loop(1,1,2,3,5)
 ```
 
@@ -43,6 +44,7 @@ Be careful, you cannot estimate the field on the loop. In that cas, the field va
 
 ```python
 import numpy as np
+from Solenoyds.Loop import Loop
 
 loop = Loop(1,1,2,3,5)
 l = np.linspace(-1,1,10)
@@ -66,6 +68,8 @@ To export a field map as a .txt file
 * Example
 
 ```python
+from Solenoyds.Solenoid import Solenoid
+
 loop = Loop()
 loop.exportFieldMap("output_map.txt",-1,1,-1,1,-1,1,20)
 ```  
@@ -83,6 +87,7 @@ To export the field computed in some points as a .txt file
 
 ```python
 import numpy as np
+from Solenoyds.Loop import Loop
 
 z = np.linspace(-2,2,20)
 x = np.zeros_like(z)
@@ -106,6 +111,8 @@ To plot the field on the main axis
 * Example
 
 ```python
+from Solenoyds.Loop import Loop
+
 loop = Loop(B0=0.1)
 fig = loop.plotFieldMainAxis(zmin=-5,zmax=5)
 fig.savefig("axis_loop.png")
@@ -125,6 +132,8 @@ To display the loop
 * Example
 
 ```python
+from Solenoyds.Loop import Loop
+
 loop = Loop(1,1,2,3,5)
 fig = loop.displayLoop()
 fig.savefig("loop.png")
@@ -147,6 +156,8 @@ To display the field
 * Example
 
 ```python
+from Solenoyds.Loop import Loop
+
 loop = Loop(1,1,2,3,5)
 fig = loop.displayField3D()
 fig.savefig("3D.png")
@@ -169,6 +180,8 @@ To display the field in a plan x=0, y=0 or z=0
 * Example
 
 ```python
+from Solenoyds.Loop import Loop
+
 loop = Loop(1,1,2,3,5)
 fig = loop.displayField2D()
 fig.savefig("2D.png")
@@ -207,6 +220,8 @@ The constructor
 * Example
 
 ```python
+from Solenoyds.Solenoid import Solenoid
+
 sol = Solenoid(I=400,L=1,n=100,x0=0,y0=0,z0=0,r0=0.5,axis="z")
 print(sol)
 ```
@@ -226,6 +241,7 @@ To compute the magnetic field produced by the solenoid
 
 ```python
 import numpy as np
+from Solenoyds.Solenoid import Solenoid
 
 sol = Solenoid(r0=0.5)
 l = np.linspace(-1,1,10)
@@ -249,6 +265,8 @@ To export a field map as a .txt file
 * Example
 
 ```python
+from Solenoyds.Solenoid import Solenoid
+
 sol = Solenoid(n=50)
 sol = exportFieldMap("output_map.txt",-1,1,-1,1,-1,1,20)
 ```  
@@ -266,6 +284,7 @@ To export the field computed in some points as a .txt file
 
 ```python
 import numpy as np
+from Solenoyds.Solenoid import Solenoid
 
 z = np.linspace(-2,2,20)
 x = np.zeros_like(z)
@@ -274,6 +293,35 @@ sol = Solenoid(n=40)
 sol.exportField("output.txt",x,y,z)
 ```
 
+### Solenoid.colormapField
+To do a colormap of the field
+        
+* Arguments
+    - figsize: (float,float)
+        the size of the figure
+    - nbpoints: int
+        number of points of evaluation
+        
+* Returns
+    - fig1,fig2,fig3: 3 matplotlib.pyplot.figure
+        the figure
+
+* Example
+
+```python
+from Solenoyds.Solenoid import Solenoid
+
+sol = Solenoid(n=50,x0=2,L=5)
+fig1, fig2, fig3 = sol.colormapField()
+fig1.savefig("colormap1.png")
+fig2.savefig("colormap2.png")
+fig3.savefig("colormap3.png")
+```
+
+![colormap Br](colormap1.png "colormap Br")
+![colormap Bz](colormap2.png "colormap Bz")
+![colormap |B|](colormap3.png "colormap |B|")
+            
 ### Solenoid.plotFieldMainAxis
 To plot the field on the main axis
 
@@ -289,6 +337,8 @@ To plot the field on the main axis
 * Example
 
 ```python
+from Solenoyds.Solenoid import Solenoid
+
 sol = Solenoid(n = 1000, I = 100,L = 5, z0 = 33)
 fig = sol.plotFieldMainAxis(zmin=-sol.L,zmax=sol.L)
 fig.savefig("axis_sol.png")
@@ -309,6 +359,8 @@ To display the solenoid
 * Example
 
 ```python
+from Solenoyds.Solenoid import Solenoid
+
 sol = Solenoid()
 fig = sol.displaySolenoid()
 fig.savefig("sol.png")
@@ -329,6 +381,8 @@ To display the field in 3D
 * Example
 
 ```python
+from Solenoyds.Solenoid import Solenoid
+
 sol = Solenoid(n = 50)
 fig = sol.displayField3D()
 fig.savefig("sol_3D.png")
@@ -351,6 +405,8 @@ To display the field in a plan x=0, y=0 or z=0
 * Example
 
 ```python
+from Solenoyds.Solenoid import Solenoid
+
 sol = Solenoid(n=100)
 fig = sol.displayField2D(figsize=(8,8))
 fig.savefig("sol_2D.png")

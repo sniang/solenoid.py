@@ -1,4 +1,4 @@
-# solenoid.py
+# Solenoyds
 To simulate solenoids and compute the magnetic field
 
 ## Class Loop.py

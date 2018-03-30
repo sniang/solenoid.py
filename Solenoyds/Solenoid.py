@@ -65,25 +65,29 @@ class Solenoid:
             sol = Solenoid(I=400,L=1,n=100,x0=0,y0=0,z0=0,r0=0.5,axis="z")
             print(sol)
         """
+        N = int(n*L)
         mu0 = 4E-7*np.pi
+        B0 = mu0*n*I
+        self.N = N
         self.mu0 = mu0
-        self.B0 = mu0*n*I
+        self.B0 = B0
         self.L = L
         self.n = n
         self.x0 = x0
         self.y0 = y0
         self.z0 = z0
         self.r0 = r0
-        self.N = int(n*L)
-        N = self.N
-        d = L/(N-1)
         self.loops = []
         self.I = I
         
         b0 = I*mu0/2/r0
         
-        for i in np.arange(N) :
-         self.loops.append(Loop(b0,x0=x0,y0=y0,z0=z0-L/2+i*d,r0=r0))
+        if N == 1:
+            self.loops.append(Loop(b0,x0=x0,y0=y0,z0=z0,r0=r0))
+        else:
+            d = L/(N-1)
+            for i in np.arange(N) :
+                self.loops.append(Loop(b0,x0=x0,y0=y0,z0=z0-L/2+i*d,r0=r0))
         
         
 
